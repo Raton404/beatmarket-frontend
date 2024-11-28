@@ -15,7 +15,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-const API_URL = 'https://beatmarket-backend.vercel.app';
+const API_URL = 'https://beatmarket-backend.vercel.app/api';
 
 const Catalogo = ({ 
   showLoginDialog, 
