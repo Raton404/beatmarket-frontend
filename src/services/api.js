@@ -35,7 +35,8 @@ export const beatService = {
     return response.data;
   },
   getAllBeats: async () => {
-    const response = await axios.get(`${API_URL}/beats`);
+    // Quitamos el /api extra
+    const response = await axios.get(`${API_URL}/beats`); 
     return response.data;
   }
 };
