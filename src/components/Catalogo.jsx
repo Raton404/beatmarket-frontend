@@ -15,6 +15,8 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Catalogo = ({ 
   showLoginDialog, 
   setShowLoginDialog, 
@@ -44,7 +46,7 @@ const Catalogo = ({
 
   // Primero definimos handlePlayBeat
   const handlePlayBeat = useCallback((beat) => {
-    const audioUrl = `http://localhost:5000${beat.beatUrl}`;
+    const audioUrl = `${API_URL}${beat.beatUrl}`;
     
     if (selectedBeat?.id === beat.id) {
       if (isPlaying) {
@@ -263,7 +265,7 @@ const Catalogo = ({
   useEffect(() => {
     const fetchBeats = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/beats');
+        const response = await fetch('${API_URL}/api/beats');
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
         }
@@ -294,7 +296,7 @@ const Catalogo = ({
               {/* Imagen del beat */}
               <div className="relative aspect-video">
                 <img
-                  src={beat.coverUrl ? `http://localhost:5000${beat.coverUrl}` : `/api/placeholder/400/225`}
+                  src={beat.coverUrl ? `${API_URL}${beat.coverUrl}` : `/api/placeholder/400/225`} // Actualizado
                   alt={beat.title}
                   className="w-full h-full object-cover"
                 />
@@ -372,7 +374,7 @@ const Catalogo = ({
             {/* Info del Beat */}
             <div className="flex items-center space-x-4 w-1/4">
               <img 
-                src={selectedBeat.coverUrl ? `http://localhost:5000${selectedBeat.coverUrl}` : `/api/placeholder/40/40`}
+                src={selectedBeat.coverUrl ? `${API_URL}${selectedBeat.coverUrl}` : `/api/placeholder/40/40`} // Actualizado
                 alt={selectedBeat.title}
                 className="w-16 h-16 object-cover rounded"
               />
@@ -468,7 +470,7 @@ const Catalogo = ({
                       {/* La misma estructura de beat card que usas en Beats Destacados */}
                       <div className="relative aspect-video">
                         <img
-                          src={beat.coverUrl ? `http://localhost:5000${beat.coverUrl}` : `/api/placeholder/400/225`}
+                          src={beat.coverUrl ? `${API_URL}${beat.coverUrl}` : `/api/placeholder/400/225`} // Actualizado
                           alt={beat.title}
                           className="w-full h-full object-cover"
                         />

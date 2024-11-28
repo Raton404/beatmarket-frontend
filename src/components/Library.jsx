@@ -3,6 +3,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import axios from 'axios';
 
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Library = () => {
     const [purchases, setPurchases] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,7 +13,7 @@ const Library = () => {
     useEffect(() => {
         const fetchLibrary = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/library', {
+                const response = await axios.get(`${API_URL}/api/library`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -29,7 +32,7 @@ const Library = () => {
     const handleDownload = async (beatId, licenseId) => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/library/download/${beatId}/${licenseId}`,
+                `${API_URL}/api/library/download/${beatId}/${licenseId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`

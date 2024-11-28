@@ -4,6 +4,8 @@ import { Button } from './ui/button';
 import AudioPlayer from './AudioPlayer';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const BeatCard = ({ id, title, description, price, sellerId, beatUrl, genre, duration }) => {
   const { isAuthenticated, user } = useContext(AuthContext);
 
@@ -14,7 +16,7 @@ const BeatCard = ({ id, title, description, price, sellerId, beatUrl, genre, dur
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/payment/create_preference', {
+      const response = await axios.post('${API_URL}/api/payment/create_preference', {
         description: `Compra del beat: ${title}`,
         title,
         price: Number(price),
@@ -45,7 +47,7 @@ const BeatCard = ({ id, title, description, price, sellerId, beatUrl, genre, dur
         {/* Audio Player */}
         <div className="mb-4">
           <AudioPlayer 
-            url={`http://localhost:5000${beatUrl}`}
+            url={`${API_URL}${beatUrl}`}
             title={title}
           />
         </div>

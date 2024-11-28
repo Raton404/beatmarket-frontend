@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AudioPlayer = ({ url, title }) => {
   // Estados
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,7 +16,7 @@ const AudioPlayer = ({ url, title }) => {
   const progressBarRef = useRef(null);
 
   // Asegurarse de que la URL sea absoluta
-  const fullUrl = url.startsWith('http') ? url : `http://localhost:5000${url}`;
+  const fullUrl = url.startsWith('http') ? url : `${API_URL}${url}`;
 
   useEffect(() => {
     const audio = audioRef.current;

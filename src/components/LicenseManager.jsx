@@ -4,6 +4,9 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import axios from 'axios';
 
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const defaultLicenses = [
   {
     name: 'Licencia Básica',
@@ -47,7 +50,7 @@ const LicenseManager = ({ beatId }) => {
     try {
       // Enviar todas las licencias al servidor
       const promises = licenses.map(license => 
-        axios.post(`http://localhost:5000/api/beats/${beatId}/licenses`, 
+        axios.post(`${API_URL}/api/beats/${beatId}/licenses`, 
           { ...license, beatId },
           {
             headers: {

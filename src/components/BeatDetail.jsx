@@ -6,6 +6,8 @@ import { Button } from "./ui/button";
 import AudioPlayer from './AudioPlayer';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const BeatDetail = () => {
   const { id } = useParams();
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -18,8 +20,8 @@ const BeatDetail = () => {
     const fetchBeatDetails = async () => {
       try {
         const [beatResponse, licensesResponse] = await Promise.all([
-          axios.get(`http://localhost:5000/api/beats/${id}`),
-          axios.get(`http://localhost:5000/api/beats/${id}/licenses`)
+          axios.get(`${API_URL}/api/beats/${id}`),
+          axios.get(`${API_URL}/api/beats/${id}/licenses`)
         ]);
 
         setBeat(beatResponse.data);
@@ -48,7 +50,7 @@ const BeatDetail = () => {
         buyerId: user.id
     });
       const response = await axios.post(
-        'http://localhost:5000/api/payment/create-preference',
+        '${API_URL}/api/payment/create-preference',
         {
           title: beat.title,
           licenseId,
@@ -102,13 +104,13 @@ const BeatDetail = () => {
           
           {beat.coverUrl && (
             <img 
-              src={beat.coverUrl}
+              src={`${API_URL}${beat.coverUrl}`}
               alt={beat.title}
               className="w-full h-64 object-cover rounded-lg mb-4"
             />
           )}
 
-          <AudioPlayer url={beat.beatUrl} />
+          <AudioPlayer url={`${API_URL}${beat.beatUrl}`} />
 
           <div className="mt-4 space-y-2">
             <p className="text-lg"><span className="font-semibold">Productor:</span> {beat.sellerName}</p>

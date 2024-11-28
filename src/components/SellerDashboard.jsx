@@ -66,6 +66,8 @@ const SellerDashboard = () => {
     coverImage: null
   });
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
   // Agregar estos dos estados que faltan
   const [formErrors, setFormErrors] = useState({});
   const [uploadedBeatId, setUploadedBeatId] = useState(null);
@@ -106,7 +108,7 @@ const SellerDashboard = () => {
   }, [selectedBeat]);
 
   const handlePlayBeat = (beat) => {
-    const audioUrl = `http://localhost:5000${beat.beatUrl}`;
+    const audioUrl = `${API_URL}${beat.beatUrl}`;
     
     if (selectedBeat?.id === beat.id) {
       // Si es el mismo beat, toggle play/pause
@@ -207,7 +209,7 @@ const SellerDashboard = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:5000/api/beats/upload',
+        `${API_URL}/api/beats/upload`,
         formData,
         {
           headers: {
@@ -583,9 +585,13 @@ const SellerDashboard = () => {
                   {/* Información del Beat */}
                   <div className="flex items-center space-x-4 w-1/4">
                     <img 
-                      src={selectedBeat.coverUrl ? `http://localhost:5000${selectedBeat.coverUrl}` : `/api/placeholder/40/40`}
-                      alt={selectedBeat.title}
-                      className="w-16 h-16 object-cover rounded"
+                      src={beat.coverUrl ? `${API_URL}${beat.coverUrl}` : `/api/placeholder/400/400`} // Actualizado
+                      alt={beat.title}
+                      className="w-full h-48 object-cover rounded-lg"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/api/placeholder/400/400";
+                      }}
                     />
                     <div>
                       <h4 className="font-medium text-sm">{selectedBeat.title}</h4>
@@ -652,7 +658,7 @@ const SellerDashboard = () => {
                     <div className="relative">
                       {/* Imagen del beat con URL correcta */}
                       <img 
-                        src={beat.coverUrl ? `http://localhost:5000${beat.coverUrl}` : `/api/placeholder/400/400`}
+                        src={beat.coverUrl ? `${API_URL}${beat.coverUrl}` : `/api/placeholder/400/400`} // Actualizado
                         alt={beat.title}
                         className="w-full h-48 object-cover rounded-lg"
                         onError={(e) => {

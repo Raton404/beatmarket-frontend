@@ -7,6 +7,9 @@ import {
   CardTitle,
   CardContent
 } from '../components/ui/card';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const SellerSetup = () => {
   const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,14 +17,13 @@ const SellerSetup = () => {
   const connectWithMercadoPago = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:5000/api/seller/connect', {
+      const response = await fetch(`${API_URL}/seller/connect`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
-
       const data = await response.json();
       if (data.authUrl) {
         window.location.href = data.authUrl;
