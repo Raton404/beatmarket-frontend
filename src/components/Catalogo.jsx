@@ -15,7 +15,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const Catalogo = ({ 
   showLoginDialog, 
