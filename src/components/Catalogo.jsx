@@ -265,7 +265,7 @@ const Catalogo = ({
   useEffect(() => {
     const fetchBeats = async () => {
       try {
-        const response = await fetch('${API_URL}/api/beats');
+        const response = await fetch(`${API_URL}/beats`);
         if (!response.ok) {
           throw new Error(`Error HTTP: ${response.status}`);
         }
