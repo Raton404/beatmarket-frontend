@@ -15,7 +15,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-const API_URL = 'https://beatmarket-backend.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://beatmarket-backend.vercel.app/api';
 
 const Catalogo = ({ 
   showLoginDialog, 
@@ -46,7 +46,7 @@ const Catalogo = ({
 
   // Primero definimos handlePlayBeat
   const handlePlayBeat = useCallback((beat) => {
-    const audioUrl = `${API_URL}${beat.beatUrl}`;
+    const audioUrl = `${API_URL.replace('/api', '')}${beat.beatUrl}`;
     
     if (selectedBeat?.id === beat.id) {
       if (isPlaying) {
@@ -265,7 +265,7 @@ const Catalogo = ({
   useEffect(() => {
     const fetchBeats = async () => {
       try {
-        const response = await fetch(`https://beatmarket-backend.vercel.app/api/beats`);
+        const response = await fetch(`${API_URL}/beats`); // Ya no necesitas /api porque está en la URL base
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || `Error HTTP: ${response.status}`);
@@ -297,7 +297,7 @@ const Catalogo = ({
               {/* Imagen del beat */}
               <div className="relative aspect-video">
                 <img
-                  src={beat.coverUrl ? `${API_URL}${beat.coverUrl}` : `/api/placeholder/400/225`} // Actualizado
+                  src={beat.coverUrl ? `${API_URL.replace('/api', '')}${beat.coverUrl}` : `/api/placeholder/400/225`}
                   alt={beat.title}
                   className="w-full h-full object-cover"
                 />
@@ -375,7 +375,7 @@ const Catalogo = ({
             {/* Info del Beat */}
             <div className="flex items-center space-x-4 w-1/4">
               <img 
-                src={selectedBeat.coverUrl ? `${API_URL}${selectedBeat.coverUrl}` : `/api/placeholder/40/40`} // Actualizado
+                src={selectedBeat.coverUrl ? `${API_URL.replace('/api', '')}${selectedBeat.coverUrl}` : `/api/placeholder/40/40`}
                 alt={selectedBeat.title}
                 className="w-16 h-16 object-cover rounded"
               />
