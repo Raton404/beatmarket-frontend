@@ -489,7 +489,7 @@ const Catalogo = ({
                       {/* La misma estructura de beat card que usas en Beats Destacados */}
                       <div className="relative aspect-video">
                         <img
-                          src={beat.coverUrl ? `${API_URL}${beat.coverUrl}` : `/api/placeholder/400/225`} // Actualizado
+                          src={beat.coverUrl ? `${API_URL.replace('/api', '')}${beat.coverUrl}` : `/api/placeholder/400/225`}
                           alt={beat.title}
                           className="w-full h-full object-cover"
                         />
