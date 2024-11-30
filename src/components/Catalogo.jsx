@@ -267,7 +267,8 @@ const Catalogo = ({
       try {
         const response = await fetch(`https://beatmarket-backend.vercel.app/api/beats`);
         if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
+          const errorData = await response.json();
+          throw new Error(errorData.message || `Error HTTP: ${response.status}`);
         }
         const data = await response.json();
         setBeats(data);
