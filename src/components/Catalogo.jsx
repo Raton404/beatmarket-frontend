@@ -15,7 +15,7 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-const API_URL = 'https://beatmarket-backend.vercel.app';
+const API_URL = import.meta.env.VITE_API_URL || 'https://beatmarket-backend.vercel.app/api';
 
 const Catalogo = ({ 
   showLoginDialog, 
@@ -265,8 +265,8 @@ const Catalogo = ({
   useEffect(() => {
     const fetchBeats = async () => {
       try {
-        console.log('Intentando fetch a:', `${API_URL}/beats`);
-        const response = await fetch(`${API_URL}/beats`, {
+        console.log('Intentando fetch a:', `${API_URL.replace('/api', '')}/api/beats`);
+        const response = await fetch(`${API_URL.replace('/api', '')}/api/beats`, {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
