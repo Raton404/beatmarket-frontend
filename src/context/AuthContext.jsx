@@ -11,17 +11,13 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const verifyUser = async () => {
-      localStorage.removeItem('token');
-      setUser(null);
-      setIsAuthenticated(false);
-      setLoading(false);
-      
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await fetch(`${API_URL}/auth/me`, {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/me`, {
             headers: {
-              'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             }
           });
           
@@ -33,12 +29,14 @@ export const AuthProvider = ({ children }) => {
           console.log('Usuario verificado:', userData);
           setUser(userData);
           setIsAuthenticated(true);
-        } catch (error) {
-          console.error('Error verificando usuario:', error);
-          localStorage.removeItem('token');
-          setUser(null);
-          setIsAuthenticated(false);
         }
+      } catch (error) {
+        console.error('Error verificando usuario:', error);
+        localStorage.removeItem('token');
+        setUser(null);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
       }
     };
   
@@ -47,13 +45,21 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      console.log('Intentando login en:', `${API_URL.replace('/api', '')}/api/auth/login`);
+      const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(credentials),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(errorText);
+      }
+
       const data = await response.json();
       if (data.token) {
         localStorage.setItem('token', data.token);
@@ -68,13 +74,21 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
+      console.log('Intentando registrar en:', `${API_URL.replace('/api', '')}/api/auth/register`);
+      const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(errorText);
+      }
+
       const data = await response.json();
       if (data.token) {
         localStorage.setItem('token', data.token);
