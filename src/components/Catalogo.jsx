@@ -265,15 +265,33 @@ const Catalogo = ({
   useEffect(() => {
     const fetchBeats = async () => {
       try {
-        const response = await fetch(`${API_URL}/beats`); // Ya no necesitas /api porque está en la URL base
+        console.log('Intentando fetch a:', `${API_URL}/beats`);
+        const response = await fetch(`${API_URL}/beats`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
+        
+        console.log('Estado de la respuesta:', response.status);
+        
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || `Error HTTP: ${response.status}`);
+          const errorText = await response.text(); // Primero obtenemos el texto de la respuesta
+          console.log('Respuesta de error:', errorText);
+          try {
+            const errorData = JSON.parse(errorText);
+            throw new Error(errorData.message || `Error HTTP: ${response.status}`);
+          } catch (parseError) {
+            throw new Error(`Error HTTP: ${response.status}. Respuesta: ${errorText}`);
+          }
         }
+        
         const data = await response.json();
+        console.log('Datos recibidos:', data);
         setBeats(data);
       } catch (error) {
         console.error('Error al cargar beats:', error);
+        console.error('URL utilizada:', `${API_URL}/beats`);
       }
     };
 
