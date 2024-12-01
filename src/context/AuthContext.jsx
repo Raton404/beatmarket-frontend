@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://beatmarket-backend.vercel.app/api';
+const API_BASE_URL = 'https://beatmarket-backend.vercel.app/api';
 
 export const AuthContext = createContext(null);
 
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/me`, {
+          const response = await fetch(`${API_BASE_URL}/auth/me`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      console.log('Intentando login en:', `${API_URL.replace('/api', '')}/api/auth/login`);
-      const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/login`, {
+      console.log('Intentando login...');
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,6 +61,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      console.log('Respuesta del login:', data);
+
       if (data.token) {
         localStorage.setItem('token', data.token);
         setUser(data.user);
@@ -74,8 +76,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      console.log('Intentando registrar en:', `${API_URL.replace('/api', '')}/api/auth/register`);
-      const response = await fetch(`${API_URL.replace('/api', '')}/api/auth/register`, {
+      console.log('Intentando registrar usuario...', userData);
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +92,8 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      console.log('Respuesta del registro:', data);
+      
       if (data.token) {
         localStorage.setItem('token', data.token);
         setUser(data.user);
